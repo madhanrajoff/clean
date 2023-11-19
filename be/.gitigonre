@@ -72,3 +72,9 @@ __pypackages__/
 # Celery stuff
 celerybeat-schedule
 celerybeat.pid
+
+# RESTAPI
+api-req.http
+
+# MongoDB
+playground-1.mongodb.js
