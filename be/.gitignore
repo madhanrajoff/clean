@@ -78,3 +78,6 @@ api-req.http
 
 # MongoDB
 playground-1.mongodb.js
+
+# PyCharm
+.idea/
