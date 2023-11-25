@@ -14,6 +14,7 @@ class Car(BaseModel):
     make: str
     model: str
     number: str
+    subscription_id: str
 
 
 class ReferralActivity(BaseModel):
@@ -126,6 +127,7 @@ class Subscriptions(BaseModel):
     package: Packages
     user: Users
     slots: Slots
+    status: str = Field(...)  # TODO: Enum. ex: subscription - Active, Suspended, etc...
 
     class Config:
         allow_population_by_field_name = True
@@ -136,5 +138,37 @@ class Subscriptions(BaseModel):
                 "user": {"_id": "user_id", "username": "User Name", "contact": "0000000000", "address": "User Address",
                          "email": "User Email"},
                 "slots": {"_id": "slots_id", "morning": False, "afternoon": True, "evening": False}
+            }
+        }
+
+
+class Payments(BaseModel):
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    status: str = Field(...)  # TODO: Enum, ex: payment - Initiated, Success, etc...
+    transaction_id: int = Field(...)
+    subscription_id: str = Field(...)
+
+    class Config:
+        allow_population_by_field_name = True
+        schema_extra = {
+            "example": {
+                "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
+                "status": "Don Quixote",
+                "subscription_id": "Don Quixote",
+                "transaction_id": "Don Quixote",
+            }
+        }
+
+
+class PaymentUpdate(BaseModel):
+    id: str
+    status: str
+
+    class Config:
+        allow_population_by_field_name = True
+        schema_extra = {
+            "example": {
+                "id": "Don Quixote",
+                "status": "Don Quixote"
             }
         }
