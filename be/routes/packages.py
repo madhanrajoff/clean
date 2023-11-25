@@ -11,7 +11,7 @@ def list_package(request: Request):
     return packages
 
 
-@router.get("/{id}/calculate-cost/{type}", response_description="Package cost")
+@router.get("/{id}/calculate-cost/", response_description="Package cost")
 def user_profile(id: str, type: str, request: Request):
     if (package := request.app.database["packages"].find_one({"_id": id})) is not None:
         # TODO: Incur charges based on type
