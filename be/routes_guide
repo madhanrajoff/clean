@@ -1,0 +1,18 @@
+		1	/users	Post	Create a new user	Validate the user and save to DB
+		2	/users/id	Get	Get the details of the particular user	Get the user based on ID
+		3	/users/id	Patch	Update the given user	Validate the user and don't allow the key fields to be updated (mobile number)
+		4	/cars	Get	Get all the master list of the cars	Get all the cars for loading the Car related dropdowns
+		5	/users/id/cars	Get	Get all the car belongs to the particular user	Check if the user is valid and get all the cars from the UserCar table 
+		6	/users/id/cars	Post	Create a new car for the given user	Check if the user is valid and add a new car to the UserCar table
+		7	/users/id/cars/id	Patch	Update the car details of the particular car and user	Check if the user is valid and  update the existing car. Ensure key fields are not allowed to be edited
+		8	/users/id/cars/id/subscriptions	Get	Get all the subscriptions of the given user	Select * from subscriptions s join usercar uc on s.usercar = uc.id where uc.user=userid 
+		9	/users/id/cars/id/subscriptions	Post	Add a subscription to the given car of the given user 	Get the corresponding usercar entry for the given userid and carid
+						Add an entry to the subscription table with the usercar obtained above
+		10	/users/id/cars/id/subscriptions/id	Patch	Update the particular subscription 	Allow changes only to the higher package (or) cancel the subscription (or) extend the subscription by "n" days
+		11	/users/id/cars/id/subscriptions/id/payment	Post	Create a new payment for the given subscription	
+		12	/users/id/cars/id/subscriptions/id/payment/id	Patch	Update the payment status for the given payment id	
+		13	/users/id/points	Get	Get all the points accumulated by the user 	
+		14	/users/id/points/id	Get	Get the details of the particular point 	
+		15	/users/id/points	Post	Add a new point to the given user	
+		16	/packages	Get	Get all the packages 	
+		17	/packages/id	Get	Get the details of the particular package	
