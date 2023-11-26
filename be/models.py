@@ -27,7 +27,6 @@ class Apartment(BaseModel):
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "...",
                 "name": "...",
                 "address": "...",
                 "is_active": True,
@@ -47,7 +46,6 @@ class Car(BaseModel):
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "...",
                 "make": "...",
                 "name": "...",
                 "model": "...",
@@ -72,19 +70,22 @@ class User(BaseModel):
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "...",
-                "mobile_number": 000,
+                "mobile_number": 1234567890,
                 "firstname": "...",
                 "lastname": "...",
                 "email": "...",
-                "apartment": {"field1": "...", "field2": "..."},  # Example data for Apartment
+                "apartment": {
+                    "name": "...",
+                    "address": "...",
+                    "is_active": True,
+                    "created_on": "2023-11-25T12:34:56"  # Replace with a valid timestamp
+                },
                 "referred_by": "...",
                 "total_reward_points": 0,
                 "is_active": True,
-                "created_on": datetime.now(),
+                "created_on": "2023-11-25T12:34:56"
             }
         }
-
 
 class UserCar:
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
@@ -99,7 +100,6 @@ class UserCar:
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "...",
                 "user": {"field1": "...", "field2": "..."},  # Example data for User
                 "car": {"field1": "...", "field2": "..."},  # Example data for Car
                 "color": "...",
@@ -120,7 +120,6 @@ class Service(BaseModel):
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "...",
                 "name": "...",
                 "is_active": True,
                 "created_on": datetime.now(),
@@ -141,7 +140,6 @@ class Package(BaseModel):
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "...",
                 "name": "...",
                 "description": "...",
                 "services": [{"field1": "...", "field2": "..."}],  # Example data for Services
@@ -177,7 +175,6 @@ class Payment(BaseModel):
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "...",
                 "amount": 699,
                 "status": Payment_Status.Intiated.name,
                 "created_on": datetime.now(),
@@ -199,7 +196,6 @@ class Subscription(BaseModel):
         arbitrary_types_allowed=True
         json_schema_extra = {
             "example": {
-                "_id": "...",
                 "user_car": {"field1": "...", "field2": "..."},  # Example data for UserCar
                 "status": Subscription_Status.Inactive.name,
                 "payment": {"field1": "...", "field2": "..."},  # Example data for Payment,
@@ -227,7 +223,6 @@ class PointsTracker(BaseModel):
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "_id": "...",
                 "user": {"field1": "...", "field2": "..."},  # Example data for User
                 "activity": Activity.Referral.name,
                 "reference_id": "...",
