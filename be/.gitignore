@@ -77,7 +77,8 @@ celerybeat.pid
 api-req.http
 
 # MongoDB
-playground-1.mongodb.js
+playground.mongodb.js
+playground-clean.mongodb.js
 
 # PyCharm
 .idea/
