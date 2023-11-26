@@ -1,174 +1,237 @@
 from datetime import datetime
 import uuid
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
 from enum import Enum
 
 
-class UserStatus(Enum):
-    ACTIVE = 1
-    INACTIVE = 0
+class Car_Type(Enum):
+    Mini_Hatchbak = 0
+    Hatchback = 1
+    Premium_Hatchback = 2
+    Sedan = 3
+    Premium_Sedan = 4
+    SUV = 5
+    Premium_SUV = 6
+    Luxury = 7
+
+
+class Apartment(BaseModel):
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    name: str = Field(...)
+    address: str = Field(...)
+    is_active: bool = Field(...)
+    created_on: datetime = Field(...)
+
+    class Config:
+        populate_by_name = True
+        json_schema_extra = {
+            "example": {
+                "_id": "...",
+                "name": "...",
+                "address": "...",
+                "is_active": True,
+                "created_on": datetime.now(),
+            }
+        }
 
 
 class Car(BaseModel):
-    make: str
-    model: str
-    number: str
-    subscription_id: str
-
-
-class ReferralActivity(BaseModel):
-    mode: str = Field(...)  # TODO: Enum, ex: Mode - Subscription, Referral, etc...
-    reference_id: str = Field(...)  # Payment id
-
-
-class ReferralPoints(BaseModel):
-    date: datetime = Field(...)
-    points: int = Field(...)
-    activity: List[ReferralActivity] = []
-
-
-class Users(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
-    username: str = Field(...)
-    contact: int = Field(...)
-    address: str = Field(...)
-    status: UserStatus
-    email: Optional[str]
-    cars: Optional[List[Car]]
-    referral: Optional[int]
-    referral_points: Optional[List[ReferralPoints]]
+    make: str = Field(...)
+    name: str = Field(...)
+    model: int = Field(...)
+    type: Car_Type
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
-                "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
-                "username": "Don Quixote",
-                "contact": 0000000000,
-                "address": "...",
-                "email": "test@gmail.com",
-                "cars": [
-                    {"make": "Toyota", "model": "Camry", "number": "1234"},
-                    {"make": "Ford", "model": "Focus", "number": "5678"}
-                ]
+                "_id": "...",
+                "make": "...",
+                "name": "...",
+                "model": "...",
+                "type": Car_Type.Mini_Hatchbak.name,
             }
         }
 
 
-class UserUpdate(BaseModel):
-    username: Optional[str]
-    address: Optional[str]
+class User(BaseModel):
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    mobile_number: int = Field(...)
+    firstname: Optional[str] = Field(...)
+    lastname: Optional[str] = Field(...)
     email: Optional[str]
+    apartment: Optional[Apartment] = Field(...)
+    referred_by: Optional[str] = Field(...)
+    total_reward_points: int
+    is_active: bool = Field(...)
+    created_on: datetime = Field(...)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
-                "username": "Don Quixote",
-                "address": "...",
-                "email": "test@gmail.com"
+                "_id": "...",
+                "mobile_number": 000,
+                "firstname": "...",
+                "lastname": "...",
+                "email": "...",
+                "apartment": {"field1": "...", "field2": "..."},  # Example data for Apartment
+                "referred_by": "...",
+                "total_reward_points": 0,
+                "is_active": True,
+                "created_on": datetime.now(),
             }
         }
 
 
-class Packages(BaseModel):
+class UserCar:
+    id: str = Field(default_factory=uuid.uuid4, alias="_id")
+    user: User
+    car: Car
+    color: str = Field(...)
+    number: str = Field(...)
+    is_active: bool = Field(...)
+    created_on: datetime = Field(...)
+
+    class Config:
+        populate_by_name = True
+        json_schema_extra = {
+            "example": {
+                "_id": "...",
+                "user": {"field1": "...", "field2": "..."},  # Example data for User
+                "car": {"field1": "...", "field2": "..."},  # Example data for Car
+                "color": "...",
+                "number": "...",
+                "is_active": True,
+                "created_on": datetime.now(),
+            }
+        }
+
+
+class Service(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
     name: str = Field(...)
-    price: int = Field(...)
+    is_active: bool = Field(...)
+    created_on: datetime = Field(...)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
-                "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
-                "name": "Don Quixote",
-                "price": 600
+                "_id": "...",
+                "name": "...",
+                "is_active": True,
+                "created_on": datetime.now(),
             }
         }
 
 
-class Apartments(BaseModel):
+class Package(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
     name: str = Field(...)
-    address: str = Field(...)
+    description: str = Field(...)
+    services: List[Service] = []
+    awarded_points: int
+    is_active: bool = Field(...)
+    created_on: datetime = Field(...)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
-                "_id": "Don Quixote",
-                "name": "Don Quixote",
-                "address": "..."
+                "_id": "...",
+                "name": "...",
+                "description": "...",
+                "services": [{"field1": "...", "field2": "..."}],  # Example data for Services
+                "awarded_points": 0,
+                "is_active": True,
+                "created_on": datetime.now(),
             }
         }
 
 
-class Slots(BaseModel):
+class Subscription_Status(Enum):
+    Inactive = 0
+    Active = 1
+    Suspended = 2
+    Expired = 3
+
+
+class Payment_Status(Enum):
+    Intiated = 0
+    InProgress = 1
+    Succeeded = 2
+    Failed = 3
+
+
+class Payment(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
-    morning: bool = Field(...)
-    afternoon: bool = Field(...)
-    evening: bool = Field(...)
+    amount: int
+    status: Payment_Status
+    created_on: datetime = Field(...)
+    updated_on: datetime = Field(...)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
-                "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
-                "morning": False,
-                "afternoon": True,
-                "evening": False
+                "_id": "...",
+                "amount": 699,
+                "status": Payment_Status.Intiated.name,
+                "created_on": datetime.now(),
+                "updated_on": datetime.now(),
             }
         }
 
 
-class Subscriptions(BaseModel):
+class Subscription(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
-    package: Packages
-    user: Users
-    slots: Slots
-    status: str = Field(...)  # TODO: Enum. ex: subscription - Active, Suspended, etc...
+    user_car: UserCar
+    status: Subscription_Status
+    payment: Payment
+    created_on: datetime = Field(...)
+    expires_on: datetime = Field(...)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        arbitrary_types_allowed=True
+        json_schema_extra = {
             "example": {
-                "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
-                "package": {"_id": "package_id", "name": "Package Name"},
-                "user": {"_id": "user_id", "username": "User Name", "contact": "0000000000", "address": "User Address",
-                         "email": "User Email"},
-                "slots": {"_id": "slots_id", "morning": False, "afternoon": True, "evening": False}
+                "_id": "...",
+                "user_car": {"field1": "...", "field2": "..."},  # Example data for UserCar
+                "status": Subscription_Status.Inactive.name,
+                "payment": {"field1": "...", "field2": "..."},  # Example data for Payment,
+                "created_on": datetime.now(),
+                "expires_on": datetime.now(),
             }
         }
 
 
-class Payments(BaseModel):
+class Activity(Enum):
+    Referral = 0
+    Subscription = 1
+    Spend = 2
+
+
+class PointsTracker(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
-    status: str = Field(...)  # TODO: Enum, ex: payment - Initiated, Success, etc...
-    transaction_id: int = Field(...)
-    subscription_id: str = Field(...)
+    user: User
+    activity: Activity
+    reference_id: str  # Id of Payment for Spend, Id of Subscription for Subscription, Id of User for Referral
+    points: int
+    created_on: datetime = Field(...)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
-                "_id": "066de609-b04a-4b30-b46c-32537c7f1f6e",
-                "status": "Don Quixote",
-                "subscription_id": "Don Quixote",
-                "transaction_id": "Don Quixote",
-            }
-        }
-
-
-class PaymentUpdate(BaseModel):
-    id: str
-    status: str
-
-    class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
-            "example": {
-                "id": "Don Quixote",
-                "status": "Don Quixote"
+                "_id": "...",
+                "user": {"field1": "...", "field2": "..."},  # Example data for User
+                "activity": Activity.Referral.name,
+                "reference_id": "...",
+                "points": 10,
+                "created_on": datetime.now(),
             }
         }
