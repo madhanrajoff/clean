@@ -12,6 +12,21 @@
     }
 }
 
+.nav-link-groom {
+    color: rgba($groom-heading, .95) !important;
+    background-color: rgba($groom-dark-green, .95) !important;
+
+    &:hover {
+        color: rgba($groom-heading, .65) !important;
+    }
+}
+
+.groom-img {
+    @include media-breakpoint-up(lg) {
+        margin-bottom: 18rem;
+    }
+}
+
 // Pills
 
 .nav-pills {

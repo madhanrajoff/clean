@@ -17,8 +17,30 @@ p {
 	}
 }
 
+.groom-text-neutral {
+    color: groom-theme("text");
+}
+
+.groom-heading {
+	color: groom-theme("heading");
+}
+
+.groom-heading-dark {
+	color: groom-theme("dark-green");
+}
+
 .description {
 	font-size: $font-size-sm;
+}
+
+.groom-description {
+	font-size: $font-size-sm;
+	color: $groom-text;
+}
+
+.groom-icon {
+	font-size: $font-size-sm;
+	color: $groom-heading;
 }
 
 // Headings

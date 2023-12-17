@@ -37,14 +37,14 @@ class CardsFooter extends React.Component {
     return (
       <>
         <footer className="footer has-cards">
-          {/* <Container className="container-lg">
+          <Container className="container-lg">
             <Row>
               <Col className="mb-5 mb-md-0" md="6">
                 <Card className="card-lift--hover shadow border-0">
                   <Link to="/landing-page">
                     <CardImg
                       alt="..."
-                      src={require("assets/img/theme/landing.jpg")}
+                      src={require("assets/img/theme/jan-kopriva-sh_7sFEFICI-unsplash.jpg")}
                     />
                   </Link>
                 </Card>
@@ -54,20 +54,20 @@ class CardsFooter extends React.Component {
                   <Link to="/profile-page">
                     <CardImg
                       alt="..."
-                      src={require("assets/img/theme/profile.jpg")}
+                      src={require("assets/img/theme/brad-starkey-eP8h7YVhFHk-unsplash.jpg")}
                     />
                   </Link>
                 </Card>
               </Col>
             </Row>
-          </Container> */}
+          </Container>
           <Container>
             <Row className="row-grid align-items-center my-md">
               <Col lg="6">
-                <h3 className="text-primary font-weight-light mb-2">
+                <h3 className="font-weight-light mb-2 groom-heading-dark">
                   Thank you for supporting us!
                 </h3>
-                <h4 className="mb-0 font-weight-light">
+                <h4 className="mb-0 font-weight-light groom-heading">
                   Let's get in touch on any of these platforms.
                 </h4>
               </Col>
@@ -143,8 +143,9 @@ class CardsFooter extends React.Component {
                     // href="https://www.creative-tim.com?ref=adsr-footer"
                     href="#"
                     target="_blank"
+                    className="groom-heading-dark"
                   >
-                    Lumigo
+                    Groom Cars
                   </a>
                   .
                 </div>

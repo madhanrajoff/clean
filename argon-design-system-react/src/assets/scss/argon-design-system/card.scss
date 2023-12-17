@@ -7,6 +7,14 @@
     box-shadow: none;
     border: none;
   }
+
+  @include media-breakpoint-up(lg) {
+      height: 350px;      
+  }
+}
+
+.groom-card {
+    background-color: black;
 }
 
 .profile-page {

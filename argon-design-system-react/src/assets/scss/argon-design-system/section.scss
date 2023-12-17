@@ -110,6 +110,10 @@
         }
     }
 
+    .groom-default {
+        background-color: groom-theme("dark-green");
+    }
+
     .shape-default {
         background: linear-gradient(150deg, shapes-default-color("step-1-gradient-bg") 15%, shapes-default-color("step-2-gradient-bg") 70%, shapes-default-color("step-3-gradient-bg") 94%);
 

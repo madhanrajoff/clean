@@ -67,7 +67,7 @@ class DemoNavbar extends React.Component {
       <>
         <header className="header-global">
           <Navbar
-            className="navbar-main navbar-transparent navbar-light headroom"
+            className="navbar-main navbar-transparent navbar-groom-theme headroom"
             expand="lg"
             id="navbar-main"
           >
@@ -77,7 +77,7 @@ class DemoNavbar extends React.Component {
                   alt="..."
                   src={require("assets/img/brand/Lumigo-bg.png")}
                 /> */}
-                <span className="nav-link-inner--text">Lumigo</span>
+                <span className="nav-link-inner--text">Groom Cars</span>
               </NavbarBrand>
               <button className="navbar-toggler" id="navbar_global">
                 <span className="navbar-toggler-icon" />
@@ -273,7 +273,7 @@ class DemoNavbar extends React.Component {
                       {/* <span className="btn-inner--icon">
                         <i className="fa fa-cloud-download mr-2" />
                       </span> */}
-                      <span className="nav-link-inner--text ml-1">
+                      <span className="nav-link-inner--text groom-btn-neutral ml-1">
                         Login
                       </span>
                     </Button>

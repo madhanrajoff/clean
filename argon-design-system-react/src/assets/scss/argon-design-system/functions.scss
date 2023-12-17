@@ -14,10 +14,18 @@
 	@return map-get($shapes-default-colors, $key);
 }
 
+@function groom-theme($key: "dark-green") {
+	@return map-get($groom-themes, $key);
+}
+
 @function lines-light-color($key: "step-1-gradient-bg") {
 	@return map-get($shapes-light-colors, $key);
 }
 
 @function shapes-dark-color($key: "step-1-gradient-bg") {
 	@return map-get($shapes-dark-colors, $key);
+}
+
+@function generate-rgba($color, $alpha) {
+	@return rgba($color, $alpha);
 }

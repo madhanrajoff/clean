@@ -45,6 +45,12 @@
     }
 }
 
+.navbar-groom-theme {
+    .navbar-brand{
+        color: $navbar-groom-dark-color;
+    }
+}
+
 .navbar-nav {
   .nav-item {
     .media:not(:last-child){
@@ -195,7 +201,7 @@
   box-shadow: none;
 
   .navbar-brand {
-    color: rgba(255, 255, 255, 1);
+    color: $navbar-groom-dark-color;
   }
 
   .navbar-toggler {
@@ -218,10 +224,10 @@
     .navbar-transparent {
         .navbar-nav {
             .nav-link {
-                color: $navbar-dark-color;
+                color: $navbar-groom-dark-color;
 
                 @include hover-focus {
-                    color: $navbar-dark-hover-color;
+                    color: $navbar-groom-dark-hover-color;
                 }
 
                 &.disabled {
@@ -238,10 +244,10 @@
         }
 
         .navbar-brand {
-            color: $navbar-dark-color;
+            color: $navbar-groom-dark-color;
 
             @include hover-focus {
-                color: $navbar-dark-color;
+                color: $navbar-groom-dark-hover-color;
             }
         }
     }

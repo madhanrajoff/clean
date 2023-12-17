@@ -28,8 +28,8 @@ class Hero extends React.Component {
           {/* Hero for FREE version */}
           <section className="section section-hero section-shaped">
             {/* Background circles */}
-            <div className="shape shape-style-1 shape-default">
-              <span className="span-150" />
+            <div className="shape shape-style-1 groom-default">
+              {/* <span className="span-150" />
               <span className="span-50" />
               <span className="span-50" />
               <span className="span-75" />
@@ -38,7 +38,8 @@ class Hero extends React.Component {
               <span className="span-50" />
               <span className="span-100" />
               <span className="span-50" />
-              <span className="span-100" />
+              <span className="span-100" /> */}
+              {/* <img className="image" src={require("assets/img/brand/andre-tan-RMA3cVtY14Q-unsplash.jpg")} alt="Single Image" max-width= "100%" max-height= "100%" display= "block" margin= "auto" /> */}
             </div>
             <Container className="shape-container d-flex align-items-center py-lg">
               <div className="col px-0">
@@ -50,7 +51,7 @@ class Hero extends React.Component {
                       src={require("assets/img/brand/argon-react-white.png")}
                       style={{ width: "200px" }}
                     /> */}
-                    <p className="lead text-white">
+                    <p className="lead groom-text-neutral">
                       At Lumigo, we make car maintenance easy and convenient. We understand that your time is valuable, and we're here to provide top-notch car cleaning at your convenience, no matter what.
                     </p>
                     <div className="btn-wrapper mt-5">
@@ -64,7 +65,7 @@ class Hero extends React.Component {
                         {/* <span className="btn-inner--icon mr-1">
                           <i className="ni ni-cloud-download-95" />
                         </span> */}
-                        <span className="btn-inner--text">Know More</span>
+                        <span className="btn-inner--text groom-btn-neutral">Know More</span>
                       </Button>
                       <Button
                         className="btn-icon mb-3 mb-sm-0"
@@ -77,7 +78,7 @@ class Hero extends React.Component {
                         {/* <span className="btn-inner--icon mr-1">
                           <i className="fa fa-github" />
                         </span> */}
-                        <span className="btn-inner--text">
+                        <span className="btn-inner--text groom-btn-neutral">
                           <span className="text-warning mr-1">Star</span>
                           Subscription
                         </span>

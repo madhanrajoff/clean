@@ -80,15 +80,15 @@ class Index extends React.Component {
               </Row> */}
               {/* <Alerts /> */}
               {/* <Typography /> */}
-              <Modals />
+              {/* <Modals /> */}
               {/* <Datepicker /> */}
               {/* <TooltipPopover /> */}
             </Container>
           </section>
-          {/* <Carousel /> */}
+          <Carousel />
           {/* <Icons /> */}
           {/* <Login /> */}
-          <Download />
+          {/* <Download /> */}
         </main>
         <CardsFooter />
       </>
