@@ -1,8 +1,33 @@
 from datetime import datetime
 import uuid
-from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field
+from typing import Optional, List, Dict, Any, Type
+from pydantic import BaseModel, Field, create_model
 from enum import Enum
+
+
+def create_update_model(base_model: Type[BaseModel], exclude_fields: list[str]) -> Type[BaseModel]:
+    # Get all fields from the base model except those in exclude_fields
+    fields = {
+        name: (field, ...) for name, field in base_model.__annotations__.items() if name not in exclude_fields
+    }
+
+    # Check if the Config class exists in the base_model
+    config_class = getattr(base_model, 'Config', None)
+
+    # Create the update model
+    update_model = create_model(
+        base_model.__name__ + "Update",
+        **fields
+    )
+
+    # Set json_schema_extra directly on the Config of update_model if Config exists
+    if config_class:
+        update_model.Config = config_class
+        attr = getattr(config_class, 'json_schema_extra', {})
+        update_model.Config.json_schema_extra = {name: v for name, v in attr['example'].items() if
+                                                 name not in exclude_fields}
+
+    return update_model
 
 
 class Car_Type(Enum):
@@ -21,7 +46,7 @@ class Apartment(BaseModel):
     name: str = Field(...)
     address: str = Field(...)
     is_active: bool = Field(...)
-    created_on: datetime = Field(...)
+    created_on: datetime = Field(default_factory=datetime.now)
 
     class Config:
         populate_by_name = True
@@ -30,7 +55,6 @@ class Apartment(BaseModel):
                 "name": "...",
                 "address": "...",
                 "is_active": True,
-                "created_on": datetime.now(),
             }
         }
 
@@ -40,7 +64,7 @@ class Car(BaseModel):
     make: str = Field(...)
     name: str = Field(...)
     model: int = Field(...)
-    type: Car_Type
+    type: int = Car_Type
 
     class Config:
         populate_by_name = True
@@ -48,8 +72,8 @@ class Car(BaseModel):
             "example": {
                 "make": "...",
                 "name": "...",
-                "model": "...",
-                "type": Car_Type.Mini_Hatchbak.name,
+                "model": 2016,
+                "type": Car_Type.Mini_Hatchbak.value,
             }
         }
 
@@ -64,7 +88,7 @@ class User(BaseModel):
     referred_by: Optional[str] = Field(...)
     total_reward_points: int
     is_active: bool = Field(...)
-    created_on: datetime = Field(...)
+    created_on: datetime = Field(default_factory=datetime.now)
 
     class Config:
         populate_by_name = True
@@ -78,43 +102,49 @@ class User(BaseModel):
                     "name": "...",
                     "address": "...",
                     "is_active": True,
-                    "created_on": "2023-11-25T12:34:56"  # Replace with a valid timestamp
                 },
                 "referred_by": "...",
                 "total_reward_points": 0,
                 "is_active": True,
-                "created_on": "2023-11-25T12:34:56"
             }
         }
 
-class UserCar:
+
+# Create an user update model excluding certain key fields (e.g., 'mobile_number')
+UserUpdate = create_update_model(User, exclude_fields=["id", "mobile_number"])
+
+
+class UserCar(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
-    user: User
+    user: Optional[str] = Field(default=None, alias="user_id")
     car: Car
-    color: str = Field(...)
-    number: str = Field(...)
-    is_active: bool = Field(...)
-    created_on: datetime = Field(...)
+    color: str
+    number: str
+    is_active: Optional[bool] = Field(default_factory=lambda: True)
+    created_on: Optional[datetime] = Field(default_factory=datetime.now)
 
     class Config:
         populate_by_name = True
         json_schema_extra = {
             "example": {
-                "user": {"field1": "...", "field2": "..."},  # Example data for User
-                "car": {"field1": "...", "field2": "..."},  # Example data for Car
+                "car": {"make": "...",
+                        "name": "...",
+                        "model": 2016,
+                        "type": Car_Type.Mini_Hatchbak.value, },  # Example data for Car
                 "color": "...",
                 "number": "...",
-                "is_active": True,
-                "created_on": datetime.now(),
             }
         }
+
+
+UserCarUpdate = create_update_model(UserCar, exclude_fields=["id", "user", "is_active", "created_on"])
 
 
 class Service(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
     name: str = Field(...)
     is_active: bool = Field(...)
-    created_on: datetime = Field(...)
+    created_on: datetime = Field(default_factory=datetime.now)
 
     class Config:
         populate_by_name = True
@@ -122,7 +152,6 @@ class Service(BaseModel):
             "example": {
                 "name": "...",
                 "is_active": True,
-                "created_on": datetime.now(),
             }
         }
 
@@ -134,7 +163,7 @@ class Package(BaseModel):
     services: List[Service] = []
     awarded_points: int
     is_active: bool = Field(...)
-    created_on: datetime = Field(...)
+    created_on: datetime = Field(default_factory=datetime.now)
 
     class Config:
         populate_by_name = True
@@ -145,7 +174,6 @@ class Package(BaseModel):
                 "services": [{"field1": "...", "field2": "..."}],  # Example data for Services
                 "awarded_points": 0,
                 "is_active": True,
-                "created_on": datetime.now(),
             }
         }
 
@@ -168,7 +196,7 @@ class Payment(BaseModel):
     id: str = Field(default_factory=uuid.uuid4, alias="_id")
     amount: int
     status: Payment_Status
-    created_on: datetime = Field(...)
+    created_on: datetime = Field(default_factory=datetime.now)
     updated_on: datetime = Field(...)
 
     class Config:
@@ -177,8 +205,6 @@ class Payment(BaseModel):
             "example": {
                 "amount": 699,
                 "status": Payment_Status.Intiated.name,
-                "created_on": datetime.now(),
-                "updated_on": datetime.now(),
             }
         }
 
@@ -188,19 +214,17 @@ class Subscription(BaseModel):
     user_car: UserCar
     status: Subscription_Status
     payment: Payment
-    created_on: datetime = Field(...)
+    created_on: datetime = Field(default_factory=datetime.now)
     expires_on: datetime = Field(...)
 
     class Config:
         populate_by_name = True
-        arbitrary_types_allowed=True
+        arbitrary_types_allowed = True
         json_schema_extra = {
             "example": {
                 "user_car": {"field1": "...", "field2": "..."},  # Example data for UserCar
                 "status": Subscription_Status.Inactive.name,
                 "payment": {"field1": "...", "field2": "..."},  # Example data for Payment,
-                "created_on": datetime.now(),
-                "expires_on": datetime.now(),
             }
         }
 
@@ -217,7 +241,7 @@ class PointsTracker(BaseModel):
     activity: Activity
     reference_id: str  # Id of Payment for Spend, Id of Subscription for Subscription, Id of User for Referral
     points: int
-    created_on: datetime = Field(...)
+    created_on: datetime = Field(default_factory=datetime.now)
 
     class Config:
         populate_by_name = True
@@ -227,6 +251,5 @@ class PointsTracker(BaseModel):
                 "activity": Activity.Referral.name,
                 "reference_id": "...",
                 "points": 10,
-                "created_on": datetime.now(),
             }
         }
